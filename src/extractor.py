@@ -2,13 +2,9 @@ import newspaper
 import sys
 import pandas as pd
 from datetime import datetime
-import time # Añadimos time para la lógica de reintentos (opcional pero bueno para la red)
+import time 
 
-
-# --- Configuración ---
-# Nota: newspaper3k necesita URLs reales para funcionar bien.
-# Reemplaza la URL de prueba de abajo por una URL de una noticia real para las pruebas.
-URL_DE_PRUEBA = "https://www.elmundo.es/tecnologia/2025/01/01/ejemplo.html" 
+URL_DE_PRUEBA = "https://www.lanacion.com.ar/economia/dolar/valores-de-enero-el-riesgo-pais-perfora-la-barrera-de-los-600-puntos-basicos-nid10112025" 
 
 
 def extraer_contenido_noticia(url, max_retries=3):
@@ -37,7 +33,6 @@ def extraer_contenido_noticia(url, max_retries=3):
             fecha_pub = "No disponible"
             if article.publish_date:
                 try:
-                    # Intenta formatear la fecha a un string ISO
                     # Esto hace que sea fácil de guardar en un CSV o DB.
                     fecha_pub = article.publish_date.strftime('%Y-%m-%d %H:%M:%S')
                 except AttributeError:
@@ -45,8 +40,6 @@ def extraer_contenido_noticia(url, max_retries=3):
                     fecha_pub = str(article.publish_date)
             
             contenido = article.text
-            
-            # Si llegamos aquí, la extracción fue exitosa
             return {
                 "URL": url,
                 "Título": titulo,
@@ -103,9 +96,7 @@ def main():
         # Imprimir solo un extracto para que no sea muy largo en la terminal
         print(datos_extraidos['Contenido'][:500] + "..." if len(datos_extraidos['Contenido']) > 500 else datos_extraidos['Contenido'])
         print("--------------------------------------------------")
-
-        # --- Guardar el contenido en un archivo CSV ---
-        
+    
         # Crear un DataFrame de Pandas con los resultados
         # Usamos una lista de diccionarios para crear el DataFrame.
         df = pd.DataFrame([datos_extraidos])

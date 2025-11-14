@@ -4,12 +4,11 @@ from datetime import datetime
 import sys
 import os
 
-
 # Importa la función que quieres testear desde tu script principal
-# (Asumimos que test_extractor.py y extractor.py están en la misma carpeta)
+
 # Nota: Si el import falla, puede que necesites configurar tu PYTHONPATH o mover los archivos.
 try:
-    from extractor import extraer_contenido_noticia
+  from src.extractor import extraer_contenido_noticia
 except ImportError:
     # Intento de ajuste de ruta en caso de estructura de carpeta (como el ejemplo original)
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
@@ -17,12 +16,11 @@ except ImportError:
 
 
 # --- Configuración de Datos Mock (Simulados) ---
-# Usamos estas variables para configurar nuestros "datos falsos"
 URL_MOCK = "https://www.prueba.com/articulo-mock"
 TITULO_MOCK = "El Último Trimestre Supera las Expectativas del Mercado"
 AUTORES_MOCK = ["Mariana La Analista", "J. T. Smith"]
 FECHA_MOCK_OBJETO = datetime(2025, 12, 25, 10, 30, 0)
-FECHA_MOCK_STRING_FORMATO = "2025-12-25 10:30:00" # Formato de salida esperado de nuestro extractor
+FECHA_MOCK_STRING_FORMATO = "2025-12-25 10:30:00" 
 CONTENIDO_MOCK = "Este es el contenido de prueba. Es largo, limpio y listo para ser analizado..."
 
 
@@ -46,7 +44,6 @@ def configurar_mock_article(MockArticle):
     mock_instance.nlp = MagicMock()
 
     return mock_instance
-
 
 class TestExtraccionNoticias(unittest.TestCase):
     """
@@ -100,7 +97,6 @@ class TestExtraccionNoticias(unittest.TestCase):
         # 3. Verificación (Solo la Fecha)
         self.assertEqual(resultado['Fecha'], FECHA_MOCK_STRING_FORMATO,
                          "La Fecha de Publicación extraída no coincide con el formato 'YYYY-MM-DD HH:MM:SS' esperado.")
-
 
 if __name__ == '__main__':
     # Ejecuta todos los tests definidos en esta clase
